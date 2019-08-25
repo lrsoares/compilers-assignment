@@ -20,12 +20,12 @@
 #include "hash.c"
 #include "tokens.h"
 
-int lineNumber = 0;
+int lineNumber = 1;
 
 %}
 
 DIGIT [0-9]
-SPECIAL [,;:(){}\[\]+*/<>=.~&$#-]
+SPECIAL [,;\:\(\)\{\}\[\]\+\-\*\/<>=\.~&$#]
 
 %x COMMENT
 
@@ -77,7 +77,12 @@ SPECIAL [,;:(){}\[\]+*/<>=.~&$#-]
                         hashInsert(&yytext[1]);
                             return LIT_CHAR;}
 
-"\""[^\"]+"\""         {yytext[strlen(yytext)-1] = 0;
+"\""[^\"]+"\""          {yytext[strlen(yytext)-1] = 0;
+                        hashInsert(&yytext[1]);
+                            return LIT_STRING;}
+
+    /* this rule is used to process a \" inside a string */
+[\"].*"\\\"".*[\"]      {yytext[strlen(yytext)-1] = 0;
                         hashInsert(&yytext[1]);
                             return LIT_STRING;}
 
@@ -92,7 +97,7 @@ SPECIAL [,;:(){}\[\]+*/<>=.~&$#-]
 
 [ \t]           {}
 "\n"            ++lineNumber;
-"//".*
+"//".*          {}
 .               {return TOKEN_ERROR;}
 
 %%
