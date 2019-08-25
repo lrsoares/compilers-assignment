@@ -71,7 +71,7 @@ SPECIAL [,;:(){}\[\]+*/<>=.~&$#-]
                         hashInsert(&yytext[1]);
                             return LIT_CHAR;}
 
-"\"".[^\"]+"\""         {yytext[strlen(yytext)-1] = 0;
+"\""[^\"]+"\""         {yytext[strlen(yytext)-1] = 0;
                         hashInsert(&yytext[1]);
                             return LIT_STRING;}
 
