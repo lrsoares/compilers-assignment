@@ -1,0 +1,40 @@
+###
+int a = 0;
+int b;
+for
+if (a=5) then 
+###
+
+byte
+
+int 
+<= 
+"banana""banana laura uhul"
+]
+"bb"
+'aa'
+'A''0'
+'_'
+'@'
+']'
+TRUE
+FALSE
+42
+
+###
+Test_09
+0.1
+9182391
+@
+@#$
+[
+###
+
+//comment comment comment
+
+###
+vivian
+ab ]
+v
+laura
+###
