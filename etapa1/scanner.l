@@ -65,7 +65,13 @@ SPECIAL [,;:(){}\[\]+*/<>=.~&$#-]
                             return LIT_INTEGER;}
 
     /* literal float must be inserted in hash as well? */
-{DIGIT}+"."{DIGIT}+     {return LIT_FLOAT;}
+{DIGIT}+"."{DIGIT}+     {hashInsert(yytext);
+                            return LIT_FLOAT;}
+{DIGIT}*"."{DIGIT}+     {hashInsert(yytext);
+                            return LIT_FLOAT;}
+{DIGIT}+"."{DIGIT}*     {hashInsert(yytext);
+                            return LIT_FLOAT;}
+
 
 "'"."'"                 {yytext[2] = 0;
                         hashInsert(&yytext[1]);
