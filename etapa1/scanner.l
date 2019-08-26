@@ -20,12 +20,12 @@
 #include "hash.c"
 #include "tokens.h"
 
-int lineNumber = 1;
+int lineNumber = 0;
 
 %}
 
 DIGIT [0-9]
-SPECIAL [,;\:\(\)\{\}\[\]\+\-\*\/<>=\.~&$#]
+SPECIAL [,;\:()\[\]\{\}\+\-\*\/<>=\.~&$#]
 
 %x COMMENT
 
@@ -77,14 +77,17 @@ SPECIAL [,;\:\(\)\{\}\[\]\+\-\*\/<>=\.~&$#]
                         hashInsert(&yytext[1]);
                             return LIT_CHAR;}
 
-"\""[^\"]+"\""          {yytext[strlen(yytext)-1] = 0;
+[\"][^\"\n]+[\"]          {yytext[strlen(yytext)-1] = 0;
                         hashInsert(&yytext[1]);
                             return LIT_STRING;}
 
     /* this rule is used to process a \" inside a string */
-[\"].*"\\\"".*[\"]      {yytext[strlen(yytext)-1] = 0;
+[\"].*"\\\""[^\"\n]*[\"]      {yytext[strlen(yytext)-1] = 0;
                         hashInsert(&yytext[1]);
                             return LIT_STRING;}
+
+
+
 
     /* the multiple lines comment rule must be before the ascii token rule, otherwise ### will be considered as three '#' tokens */
 "###"            BEGIN(COMMENT);
